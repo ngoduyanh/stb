@@ -6637,11 +6637,13 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
          }
       } else if (dispose == 2) {
          // restore what was changed last frame to background before that frame;
-         for (pi = 0; pi < pcount; ++pi) {
-            if (g->history[pi]) {
-               memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
-            }
-         }
+         /* for (pi = 0; pi < pcount; ++pi) { */
+         /*    if (g->history[pi]) { */
+         /*       memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 ); */
+         /*    } */
+         /* } */
+
+        memset(g->out, 0x00, g->w * g->h * 4);
       } else {
          // This is a non-disposal case eithe way, so just
          // leave the pixels as is, and they will become the new background
@@ -6708,16 +6710,16 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
             if (!o) return NULL;
 
             // if this was the first frame,
-            pcount = g->w * g->h;
-            if (first_frame && (g->bgindex > 0)) {
-               // if first frame, any pixel not drawn to gets the background color
-               for (pi = 0; pi < pcount; ++pi) {
-                  if (g->history[pi] == 0) {
-                     g->pal[g->bgindex][3] = 255; // just in case it was made transparent, undo that; It will be reset next frame if need be;
-                     memcpy( &g->out[pi * 4], &g->pal[g->bgindex], 4 );
-                  }
-               }
-            }
+            /* pcount = g->w * g->h; */
+            /* if (first_frame && (g->bgindex > 0)) { */
+            /*    // if first frame, any pixel not drawn to gets the background color */
+            /*    for (pi = 0; pi < pcount; ++pi) { */
+            /*       if (g->history[pi] == 0) { */
+            /*          g->pal[g->bgindex][3] = 255; // just in case it was made transparent, undo that; It will be reset next frame if need be; */
+            /*          memcpy( &g->out[pi * 4], &g->pal[g->bgindex], 4 ); */
+            /*       } */
+            /*    } */
+            /* } */
 
             return o;
          }
